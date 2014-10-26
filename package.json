@@ -1,0 +1,42 @@
+{
+  "name": "tosr0x-server",
+  "version": "0.1.0",
+  "description": "A web server that offers remote control over a Tosr0x board",
+  "homepage": "https://github.com/DeuxHuitHuit/node-tosr0x-server",
+  "author": {
+    "name": "Deux Huit Huit",
+    "url": "https://deuxhuithuit.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/DeuxHuitHuit/node-tosr0x-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DeuxHuitHuit/node-tosr0x-server/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://deuxhuithuit.mit-license.org/"
+    }
+  ],
+  "scripts": {
+    "start": "node app"
+  },
+  "main": "app.js",
+  "engines": {
+    "node": "0.10.x",
+    "npm": "2.0.x"
+  },
+  "keywords": [
+    "tosr0x",
+    "serial",
+    "usb",
+    "server"
+  ],
+  "dependencies": {
+    "lodash": "^2.4.1",
+    "rsvp": "^3.0.14",
+    "tosr0x": "^0.1.0"
+  }
+}
