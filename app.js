@@ -67,9 +67,14 @@ app.use(errorHandler());
 // app routes
 router.get('/', routes.index);
 router.get('/about', routes.about);
-router.get('/api/:cmd', api);
-router.get('/api/:cmd/:param', api);
+router.get('/api/:cmd', api.http);
+router.get('/api/:cmd/:param', api.http);
 app.use('/', router);
+
+// init api
+api.init(argv.p, {
+	debug: argv.v
+});
 
 // start the server
 app.listen(app.get('port'), function _serverStarted() {
