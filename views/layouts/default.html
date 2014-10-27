@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="description" content="" />
+	<meta name="author" content="@nitriques" />
+	<meta name="copyrights" content="Deux Huit Huit" />
+
+	<title>{{ package.title }}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.1/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+	<link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.1/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen" />
+</head>
+<body>
+	<div id="main">
+		<header>
+			<h1>{{ package.title }}</h1>
+		</header>
+
+		{% block body %}{% endblock %}
+
+		<footer class="navbar navbar-fixed-bottom">
+			<div class="container">&copy; 2014
+				<a href="https://deuxhuithuit.com/" target="_blank">Deux Huit Huit</a>
+				v{{ package.version }}
+			</div>
+		</footer>
+	</div>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.1/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+
+</body>
+</html>

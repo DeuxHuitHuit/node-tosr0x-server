@@ -1,5 +1,6 @@
 {
   "name": "tosr0x-server",
+  "title": "Tosr0x server",
   "version": "0.1.0",
   "description": "A web server that offers remote control over a Tosr0x board",
   "homepage": "https://github.com/DeuxHuitHuit/node-tosr0x-server",
@@ -36,8 +37,13 @@
   ],
   "preferGlobal": true,
   "dependencies": {
+    "connect-favicons": "0.0.4",
+    "express": "^4.10.0",
+    "express-error-handler": "^0.6.0",
     "lodash": "^2.4.1",
+    "nunjucks": "^1.1.0",
     "rsvp": "^3.0.14",
-    "tosr0x": "^0.1.0"
+    "tosr0x": "^0.1.0",
+    "yargs": "^1.3.2"
   }
 }
