@@ -38,6 +38,7 @@
   "preferGlobal": true,
   "dependencies": {
     "connect-favicons": "0.0.4",
+    "cuid": "^1.2.4",
     "express": "^4.10.0",
     "express-error-handler": "^0.6.0",
     "lodash": "^2.4.1",

@@ -69,7 +69,7 @@ app.use(errorHandler());
 router.get('/', routes.index);
 router.get('/about', routes.about);
 router.get('/api/:cmd', api.http);
-router.get('/api/:cmd/:param', api.http);
+router.post('/api/:cmd/:param', api.http);
 app.use('/', router);
 
 // init api

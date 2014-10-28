@@ -11,6 +11,10 @@
 
 	<link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" media="screen" />
 	<link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap-theme.min.css" rel="stylesheet" media="screen" />
+
+	<style type="text/css">
+		{% block css %}{% endblock %}
+	</style>
 </head>
 <body>
 	<div id="main">
@@ -31,6 +35,10 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
 
-	{% block script %}{% endblock %}
+	<script>
+		(function ($, _) {
+			{% block js %}{% endblock %}
+		})(jQuery, _);
+	</script>
 </body>
 </html>

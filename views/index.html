@@ -1,46 +1,121 @@
 {% extends "layouts/default.html" %}
 
+{% block css %}
+	.index .btn {
+		margin: 10px auto;
+	}
+{% endblock %}
+
 {% block body %}
-<div class="container">
+<div class="index">
 	{% if error %}
-		<div class="row">
-			<div class="col-xs-12">
-				<div class="alert alert-danger" role="alert">
-					<p>
-						{{ error }}
-					</p>
+	<div class="container">
+		<div class="alert alert-danger" role="alert">
+			<p>
+				{{ error }}
+			</p>
+		</div>
+		<a href="/" class="btn btn-sm btn-primary">Refresh</a>
+	</div>
+	{% endif %}
+	<div class="container">
+		<div class="panel panel-primary">
+			<div class="container panel-body">
+				<div class="row">
+					<label class="col-xs-3 col-md-2">Version: <span>{{ version }}</span></label>
+					<label class="col-xs-3 col-md-2">Voltage: <span>{{ voltage }}</span></label>
+					<label data-prop="temperature" class="col-xs-3 col-md-2">Temperature: <span>{{ temp }}</span></label>
 				</div>
 			</div>
 		</div>
-	{% endif %}
-	<div class="row">
-		<label class="col-xs-3 col-md-2">Temperature: <span>{{ temp }}</span></label>
-		<label class="col-xs-3 col-md-2">Voltage: <span>{{ voltage }}</span></label>
-		<label class="col-xs-3 col-md-2">Version: <span>{{ version }}</span></label>
 	</div>
-	<div class="row">
-		<div class="col-xs-3 col-md-2">
-			<button class="btn btn-lg btn-success">
-				<span>ALL</span>
-				<i>ON</i>
-			</button>
-		</div>
-		<div class="col-xs-3 col-md-2">
-			<button class="btn btn-lg btn-danger">
-				<span>ALL</span>
-				<i>OFF</i>
-			</button>
-		</div>
-	</div>
-	<div class="row">
-		{% for s in states %}
-			<div class="col-xs-3">
-				<button class="btn btn-lg btn-{{ 'success' if s else 'danger' }}">
-					<span>#{{ loop.index }}</span>
-					<i>{{ 'ON' if s else 'OFF' }}</i>
+	{% if not error %}
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-6 col-sm-3">
+				<button class="btn btn-lg btn-success" data-cmd="on" data-param="0">
+					<span>ALL</span>
+					<i>ON</i>
 				</button>
 			</div>
-		{% endfor %}
+			<div class="col-xs-6 col-sm-3">
+				<button class="btn btn-lg btn-danger" data-cmd="off" data-param="0">
+					<span>ALL</span>
+					<i>OFF</i>
+				</button>
+			</div>
+		</div>
+		<div class="row">
+			{% for pos, s in states %}
+				<div class="col-xs-6 col-sm-3">
+					<button class="btn btn-lg btn-{{ 'success' if s else 'danger' }}"
+						data-cmd=""
+						data-param="{{ loop.index }}">
+						<span>#{{ loop.index }}</span>
+						<i>{{ 'ON' if s else 'OFF' }}</i>
+					</button>
+				</div>
+			{% endfor %}
+		</div>
 	</div>
+	{% endif %}
 </div>
+{% endblock %}
+
+{% block js %}
+	var DISABLED = 'disabled';
+
+	$.fn.disable = function () {
+		return $(this).attr(DISABLED, DISABLED).addClass(DISABLED);
+	};
+	
+	$.fn.enable = function () {
+		return $(this).removeAttr(DISABLED).removeClass(DISABLED);
+	};
+
+	var btns = $('[data-cmd]');
+	var isRunning = false;
+	var sendCmd = function (cmd, param) {
+		if (!!isRunning) {
+			return $.Deffered();
+		}
+		btns.disable();
+		isRunning = true;
+		return $.post('/api/' + cmd + '/' + param)
+		.always(function () {
+			isRunning = false;
+			btns.enable();
+		});
+	};
+
+	var click = function (e) {
+		var t = $(this);
+		var cmd = t.attr('data-cmd');
+		var param = t.attr('data-param');
+		var hasCmd = !!cmd;
+		if (!hasCmd) {
+			cmd = t.is('.btn-success') ? 'off' : 'on';
+			t.removeClass('btn-success btn-danger')
+				.addClass('btn-' + (cmd === 'on' ? 'success' : 'danger'))
+		}
+		sendCmd(cmd, param)
+		.done(function (data) {
+			console.log(data);
+		})
+		.error(function (err) {
+			if (!hasCmd) {
+				t.removeClass('btn-success btn-danger')
+					.addClass('btn-' + (cmd === 'off' ? 'success' : 'danger'))
+			}
+			console.dir(err);
+			alert(err.responseText);
+		});
+	};
+
+	var init = function () {
+		btns.on('click', click);
+	};
+
+	$(init);
+
 {% endblock %}
