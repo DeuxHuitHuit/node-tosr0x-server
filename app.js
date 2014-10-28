@@ -59,6 +59,7 @@ app.use(favicon());
 app.use(function setData(req, res, next) {
 	req.package = pkg;
 	req.config = config;
+	req.api = api;
 	next();
 });
 app.use(express.static(path.join(__dirname, 'public')));

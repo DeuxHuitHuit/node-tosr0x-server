@@ -1,5 +1,46 @@
 {% extends "layouts/default.html" %}
 
 {% block body %}
-index!
+<div class="container">
+	{% if error %}
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="alert alert-danger" role="alert">
+					<p>
+						{{ error }}
+					</p>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+	<div class="row">
+		<label class="col-xs-3 col-md-2">Temperature: <span>{{ temp }}</span></label>
+		<label class="col-xs-3 col-md-2">Voltage: <span>{{ voltage }}</span></label>
+		<label class="col-xs-3 col-md-2">Version: <span>{{ version }}</span></label>
+	</div>
+	<div class="row">
+		<div class="col-xs-3 col-md-2">
+			<button class="btn btn-lg btn-success">
+				<span>ALL</span>
+				<i>ON</i>
+			</button>
+		</div>
+		<div class="col-xs-3 col-md-2">
+			<button class="btn btn-lg btn-danger">
+				<span>ALL</span>
+				<i>OFF</i>
+			</button>
+		</div>
+	</div>
+	<div class="row">
+		{% for s in states %}
+			<div class="col-xs-3">
+				<button class="btn btn-lg btn-{{ 'success' if s else 'danger' }}">
+					<span>#{{ loop.index }}</span>
+					<i>{{ 'ON' if s else 'OFF' }}</i>
+				</button>
+			</div>
+		{% endfor %}
+	</div>
+</div>
 {% endblock %}
