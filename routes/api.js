@@ -95,6 +95,9 @@ var validParam = function (cmd, param) {
 exports.http = function (req, res) {
 	var ret = null;
 	var mutex = null;
+	var start = new Date();
+	var timeConnect = start;
+	var timeParam = start;
 	lock()
 	.then(function (m) {
 		mutex = m;
@@ -104,9 +107,11 @@ exports.http = function (req, res) {
 		return validParam(req.params.cmd, req.params.param);
 	})
 	.then(function () {
+		timeParam = new Date();
 		return ctl.open()
 	})
 	.then(function () {
+		timeConnect = new Date();
 		return ctl[req.params.cmd](parseInt(req.params.param, 10) || 0);
 	})
 	.then(function (val) {
@@ -114,9 +119,13 @@ exports.http = function (req, res) {
 		return ctl.close();
 	})
 	.then(function () {
+		var end = new Date();
 		res.status(200).json({
 			ok: true,
-			data: ret
+			data: ret,
+			time: end - start,
+			timeConnect: timeConnect - start,
+			timeParam: timeParam - start
 		});
 	})
 	.catch(function (err) {
@@ -126,6 +135,6 @@ exports.http = function (req, res) {
 		if (!!ctl) {
 			ctl.closeImmediate();
 		}
-		unlock();
+		unlock(mutex.guid);
 	});
 };

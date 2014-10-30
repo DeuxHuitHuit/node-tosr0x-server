@@ -59,6 +59,9 @@
 		</div>
 	</div>
 	{% endif %}
+	<small>
+		request time {{ end - start }}
+	</small>
 </div>
 {% endblock %}
 
@@ -73,11 +76,26 @@
 		return $(this).removeAttr(DISABLED).removeClass(DISABLED);
 	};
 
+	$.fn.save = function () {
+		return $(this).each(function () {
+			var t = $(this);
+			t.data('class', t.attr('class'));
+		});
+	};
+
+	$.fn.restore = function () {
+		return $(this).each(function () {
+			var t = $(this);
+			t.attr('class', t.data('class'));
+		});
+	};
+
 	var btns = $('[data-cmd]');
+	var toggles = btns.filter('[data-cmd=""]');
 	var isRunning = false;
 	var sendCmd = function (cmd, param) {
 		if (!!isRunning) {
-			return $.Deffered();
+			return null;
 		}
 		btns.disable();
 		isRunning = true;
@@ -90,23 +108,32 @@
 
 	var click = function (e) {
 		var t = $(this);
+		var stack = t;
 		var cmd = t.attr('data-cmd');
 		var param = t.attr('data-param');
 		var hasCmd = !!cmd;
 		if (!hasCmd) {
 			cmd = t.is('.btn-success') ? 'off' : 'on';
-			t.removeClass('btn-success btn-danger')
-				.addClass('btn-' + (cmd === 'on' ? 'success' : 'danger'))
+		} else {
+			stack = toggles;
 		}
-		sendCmd(cmd, param)
-		.done(function (data) {
+
+		var promise = sendCmd(cmd, param);
+		if (!promise) {
+			return;
+		}
+
+		stack.save().removeClass('btn-success btn-danger')
+			.addClass('btn-warning');
+
+		promise.done(function (data) {
+			stack.removeClass('btn-warning')
+				.addClass('btn-' + (cmd === 'on' ? 'success' : 'danger'));
+			stack.find('i').text(cmd.toUpperCase());
 			console.log(data);
 		})
 		.error(function (err) {
-			if (!hasCmd) {
-				t.removeClass('btn-success btn-danger')
-					.addClass('btn-' + (cmd === 'off' ? 'success' : 'danger'))
-			}
+			stack.restore();
 			console.dir(err);
 			alert(err.responseText);
 		});

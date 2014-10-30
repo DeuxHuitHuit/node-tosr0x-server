@@ -20,6 +20,8 @@ exports.index = function (req, res) {
 		voltage: 'N/A',
 		version: 'N/A',
 		states: {},
+		start: new Date(),
+		end: null
 	};
 	var ctl;
 
@@ -43,8 +45,8 @@ exports.index = function (req, res) {
 		return ctl.refreshStates();
 	})
 	.then(function (val) {
-		console.log(val);
 		ret.states = val;
+		ret.end = new Date();
 		var renderer = render('index.html', ret);
 		renderer(req, res);
 	})

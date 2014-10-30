@@ -34,6 +34,8 @@ var routes = require('./routes');
 var api = require('./routes/api');
 var app = express(); // create the Express object
 
+process.title = pkg.title;
+
 // dev only
 if (argv.v) {
 	app.use(express.logger('dev'));
