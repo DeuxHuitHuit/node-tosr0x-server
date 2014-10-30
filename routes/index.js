@@ -37,15 +37,15 @@ exports.index = function (req, res) {
 		return ctl.voltage();
 	})
 	.then(function (val) {
-		ret.voltage = val + ' V';
+		ret.voltage = val.voltage + ' V';
 		return ctl.version();
 	})
 	.then(function (val) {
-		ret.version = val;
+		ret.version = val.version;
 		return ctl.refreshStates();
 	})
 	.then(function (val) {
-		ret.states = val;
+		ret.states = val.states;
 		ret.end = new Date();
 		var renderer = render('index.html', ret);
 		renderer(req, res);

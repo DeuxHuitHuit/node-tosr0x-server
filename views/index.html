@@ -50,8 +50,8 @@
 				<div class="col-xs-6 col-sm-3">
 					<button class="btn btn-lg btn-{{ 'success' if s else 'danger' }}"
 						data-cmd=""
-						data-param="{{ loop.index }}">
-						<span>#{{ loop.index }}</span>
+						data-param="{{ pos }}">
+						<span>#{{ pos }}</span>
 						<i>{{ 'ON' if s else 'OFF' }}</i>
 					</button>
 				</div>
@@ -59,9 +59,11 @@
 		</div>
 	</div>
 	{% endif %}
-	<small>
-		request time {{ end - start }}
-	</small>
+	<div class="container">
+		<small class="row">
+			request time {{ end - start }}
+		</small>
+	</div>
 </div>
 {% endblock %}
 

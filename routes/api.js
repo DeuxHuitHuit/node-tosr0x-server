@@ -12,16 +12,6 @@ var mutex = {
 	timeout: 0
 };
 
-var create = function (port, options) {
-	if (!port) {
-		return Tosr0x.fromPortScan(); // TODO: put options when available
-	} else {
-		return new Promise(function (res) {
-			res(new Tosr0x(port, options));
-		});
-	}
-};
-
 var APIError = function (status, message) {
 	this.message = message;
 	this.status = status;
@@ -29,7 +19,7 @@ var APIError = function (status, message) {
 APIError.prototype = Error.prototype;
 
 var init = exports.init = function (port, options) {
-	create(port, options).then(function (c) {
+	Tosr0x.create(port, options).then(function (c) {
 		ctl = c;
 	})
 	.catch(function () {
