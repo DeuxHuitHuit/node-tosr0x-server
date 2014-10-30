@@ -11,6 +11,7 @@ var mutex = {
 	guid: null,
 	timeout: 0
 };
+var connected = false;
 
 var APIError = function (status, message) {
 	this.message = message;
@@ -18,13 +19,15 @@ var APIError = function (status, message) {
 };
 APIError.prototype = Error.prototype;
 
+var initTimeout = 0;
 var init = exports.init = function (port, options) {
+	clearTimeout(initTimeout);
 	Tosr0x.create(port, options).then(function (c) {
 		ctl = c;
 	})
 	.catch(function () {
 		// retry !!
-		setTimeout(init, 2000, port, options);
+		initTimeout = setTimeout(init, 2000, port, options);
 	});
 };
 
@@ -66,6 +69,21 @@ var unlock = exports.unlock = function (guid) {
 	return true;
 };
 
+var open = exports.open = function () {
+	return (new Promise(function (res, rej) {
+		process.nextTick(function () {
+			if (connected) {
+				res(ctl);
+			} else {
+				res(ctl.open().then(function () {
+					console.log('Connection opened');
+					connected = true;
+				}));
+			}
+		});
+	}));
+};
+
 var validParam = function (cmd, param) {
 	return (new Promise(function (res, rej) {
 		process.nextTick(function () {
@@ -98,7 +116,7 @@ exports.http = function (req, res) {
 	})
 	.then(function () {
 		timeParam = new Date();
-		return ctl.open()
+		return open();
 	})
 	.then(function () {
 		timeConnect = new Date();
@@ -106,7 +124,6 @@ exports.http = function (req, res) {
 	})
 	.then(function (val) {
 		ret = val;
-		return ctl.close();
 	})
 	.then(function () {
 		var end = new Date();
@@ -122,9 +139,6 @@ exports.http = function (req, res) {
 		res.status(err.status || 500).json({error: err.message});
 	})
 	.finally(function () {
-		if (!!ctl) {
-			ctl.closeImmediate();
-		}
 		unlock(mutex.guid);
 	});
 };

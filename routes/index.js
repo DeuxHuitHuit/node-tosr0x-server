@@ -31,7 +31,7 @@ exports.index = function (req, res) {
 	})
 	.then(function (c) {
 		ctl = c;
-		return ctl.open();
+		return req.api.open();
 	})
 	.then(function () {
 		return ctl.voltage();
@@ -50,18 +50,11 @@ exports.index = function (req, res) {
 		var renderer = render('index.html', ret);
 		renderer(req, res);
 	})
-	.then(function () {
-		return ctl.close();
-	})
 	.catch(function (err) {
 		var renderer = render('index.html', _.assign(ret, {
-			error: err
+			error: err,
+			end: new Date()
 		}));
 		renderer(req, res);
-	})
-	.finally(function () {
-		if (!!ctl) {
-			ctl.closeImmediate();
-		}
 	});
 };
