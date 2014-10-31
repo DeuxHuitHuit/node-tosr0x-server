@@ -20,6 +20,7 @@
 	<div id="main">
 		<header class="container">
 			<h1>{{ package.title }}</h1>
+			{% block header %}{% endblock %}
 		</header>
 
 		{% block body %}{% endblock %}

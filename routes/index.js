@@ -20,6 +20,7 @@ exports.index = function (req, res) {
 		voltage: 'N/A',
 		version: 'N/A',
 		states: {},
+		port: null,
 		start: new Date(),
 		end: null
 	};
@@ -31,6 +32,7 @@ exports.index = function (req, res) {
 	})
 	.then(function (c) {
 		ctl = c;
+		ret.port = ctl._uri;
 		return req.api.open();
 	})
 	.then(function () {
