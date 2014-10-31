@@ -142,13 +142,16 @@ exports.http = function (req, res) {
 };
 
 exports.kill = function (req, res) {
+	var start = new Date();
 	validCtl()
 	.then(function (c) {
 		return c.close();
 	})
 	.then(function () {
+		var end = new Date();
 		res.status(200).json({
-			ok: true
+			ok: true,
+			time: end - start
 		});
 	})
 	.catch(function (err) {
