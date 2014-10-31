@@ -70,7 +70,8 @@ app.use(errorHandler());
 // app routes
 router.get('/', routes.index);
 router.get('/about', routes.about);
-router.get('/api/:cmd', api.http);
+router.get('/api/kill', api.kill);
+router.post('/api/:cmd', api.http);
 router.post('/api/:cmd/:param', api.http);
 app.use('/', router);
 

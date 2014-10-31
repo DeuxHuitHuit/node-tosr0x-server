@@ -11,7 +11,6 @@ var mutex = {
 	guid: null,
 	timeout: 0
 };
-var connected = false;
 
 var APIError = function (status, message) {
 	this.message = message;
@@ -72,12 +71,11 @@ var unlock = exports.unlock = function (guid) {
 var open = exports.open = function () {
 	return (new Promise(function (res, rej) {
 		process.nextTick(function () {
-			if (connected) {
+			if (ctl.connected()) {
 				res(ctl);
 			} else {
 				res(ctl.open().then(function () {
 					console.log('Connection opened');
-					connected = true;
 				}));
 			}
 		});
@@ -140,5 +138,20 @@ exports.http = function (req, res) {
 	})
 	.finally(function () {
 		unlock(mutex.guid);
+	});
+};
+
+exports.kill = function (req, res) {
+	validCtl()
+	.then(function (c) {
+		return c.close();
+	})
+	.then(function () {
+		res.status(200).json({
+			ok: true
+		});
+	})
+	.catch(function (err) {
+		res.status(err.status || 500).json({error: err.message});
 	});
 };
