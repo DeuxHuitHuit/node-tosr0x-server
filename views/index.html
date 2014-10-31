@@ -21,7 +21,7 @@
 		</div>
 		<a href="/" class="btn btn-sm btn-primary">Refresh</a>
 	</div>
-	{% endif %}
+	{% else %}
 	<div class="container">
 		<div class="panel panel-primary">
 			<div class="container panel-body">
@@ -33,7 +33,6 @@
 			</div>
 		</div>
 	</div>
-	{% if not error %}
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-6 col-sm-3">
@@ -141,7 +140,11 @@
 		.error(function (err) {
 			stack.restore();
 			console.dir(err);
-			alert(err.responseText);
+			var text = err.responseText;
+			try {
+				text = JSON.parse(text);
+			} catch (e) {}
+			alert(text.message || text);
 		});
 	};
 
