@@ -77,7 +77,8 @@ app.use('/', router);
 
 // init api
 api.init(argv.p, {
-	debug: argv.v
+	debug: argv.v,
+	relayCount: argv.n
 });
 
 // start the server
