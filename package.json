@@ -21,6 +21,9 @@
       "url": "http://deuxhuithuit.mit-license.org/"
     }
   ],
+  "bin": {
+    "tosr0x-server": "bin/server.js"
+  },
   "scripts": {
     "start": "node app"
   },
