@@ -33,10 +33,10 @@ Options:
   -h, -?, --help    Show help                                            
   --version         Show version number                                  
   -p, --usbport     The usb port uri to use. Leave empty to use port scan
-  -n, --relayCount  The number of relays on the board                      [default: 2]
+  -n, --relayCount  The number of relays on the board          [default: 2]
   -v, --verbose     Enables verbose mode (for debug only)                
-  --ip              The IP address to bind the server to                 
-  --port            The IP port to bind the server to               
+  --ip              The IP address to bind the server to       [default: process.env.IP || 'localhost']
+  --port            The IP port to bind the server to          [default: process.env.PORT || 3000]
 ```
 
 ## Credits

@@ -18,7 +18,9 @@ var argv = yargs
 	.describe('v', 'Enables verbose mode (for debug only)')
 	.alias('v', 'verbose')
 	.describe('ip', 'The IP address to bind the server to')
+	.defaults('ip', 'localhost')
 	.describe('port', 'The IP port to bind the server to')
+	.defaults('port', 3000)
 	.argv;
 var config = {
 	port: argv.p,
@@ -43,8 +45,8 @@ if (argv.v) {
 }
 
 // app wide vars
-app.set('ip', process.env.IP || argv.ip || 'localhost');
-app.set('port', process.env.PORT || argv.port || 3000);
+app.set('ip', process.env.IP || argv.ip);
+app.set('port', process.env.PORT || argv.port);
 
 // template engine
 nunjucks.configure('views', {
