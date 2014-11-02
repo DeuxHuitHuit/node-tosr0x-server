@@ -21,13 +21,13 @@ npm i tosr0x-sevrer -g
 Start the server usign the global script
 
 ```
-tors0x-server
+tosr0x-server
 ```
 
 Valid command-line options are
 
 ```
-Usage: tors0x-server [opts]
+Usage: tosr0x-server [opts]
 
 Options:
   -h, -?, --help    Show help                                            
