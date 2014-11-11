@@ -35,6 +35,7 @@ var router = express.Router();
 var routes = require('./routes');
 var api = require('./routes/api');
 var app = express(); // create the Express object
+var viewsPath = path.resolve(__dirname, 'views');
 
 process.title = pkg.title;
 
@@ -49,7 +50,7 @@ app.set('ip', process.env.IP || argv.ip);
 app.set('port', process.env.PORT || argv.port);
 
 // template engine
-nunjucks.configure('views', {
+nunjucks.configure(viewsPath, {
 	autoescape: true,
 	express: app
 });
@@ -86,4 +87,5 @@ api.init(argv.p, {
 // start the server
 app.listen(app.get('port'), function _serverStarted() {
 	console.log("Tosr0x Express server listening on " + app.get('ip') + " on port " + app.get('port'));
+	console.log("Views are served from " + viewsPath);
 });
