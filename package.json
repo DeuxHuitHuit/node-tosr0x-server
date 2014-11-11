@@ -1,7 +1,7 @@
 {
   "name": "tosr0x-server",
   "title": "Tosr0x server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A web server that offers remote control over a Tosr0x board",
   "homepage": "https://github.com/DeuxHuitHuit/node-tosr0x-server",
   "author": {
